@@ -1,0 +1,7 @@
+<div>
+    <!-- ko if -->
+        <button action="a->b">
+            hi
+        </button>
+    <!-- /ko -->
+</div>

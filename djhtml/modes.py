@@ -218,7 +218,28 @@ class DjTXT:
         return self.next_mode
 
 
-class DjHTML(DjTXT):
+class DjKO(DjTXT):
+    RAW_TOKENS = DjTXT.RAW_TOKENS + [
+        r"<!-- /ko -->",
+        r"<!-- ko[-\+]?.*?[-\+]?-->",
+    ]
+
+    IGNORE_TAGS = []
+
+    def create_token(self, raw_token, src):
+        kind = "ko"
+        self.next_mode = self
+
+        if raw_token.startswith("<!-- ko"):
+            return Token.Open(raw_token, kind)
+
+        if raw_token.startswith("<!-- /ko"):
+            return Token.Close(raw_token, kind)
+
+        return super().create_token(raw_token, src)
+
+
+class DjHTML(DjKO):
     """
     This mode is the entrypoint of DjHTML. Usage:
 
@@ -226,7 +247,7 @@ class DjHTML(DjTXT):
 
     """
 
-    RAW_TOKENS = DjTXT.RAW_TOKENS + [
+    RAW_TOKENS = DjKO.RAW_TOKENS + [
         r"<pre.*?>",
         r"</.*?>",
         r"<!--",
