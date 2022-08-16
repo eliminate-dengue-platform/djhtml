@@ -462,6 +462,8 @@ class InsideHTMLTag(DjTXT):
                 return Token.OpenAndClose(raw_token, kind)
         elif "text/template" in raw_token:
             self.tagname = ""
+        elif "text/html" in raw_token:
+            self.tagname = ""
 
         return super().create_token(raw_token, src)
 
